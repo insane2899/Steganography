@@ -12,4 +12,4 @@ Steganography.jar:	Steganography.java Lib.jar
 	jar  -cvfm Steganography.jar ./MANIFEST.MF Steganography.class
 
 clean: 
-	rm *.class
+	rm *.class Steganography Steganography.jar MANIFEST.MF

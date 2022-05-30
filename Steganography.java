@@ -16,6 +16,7 @@ public class Steganography{
 	private static String inputImageName,outputImageName,payloadName;
 	private static long fileSize;
 	private static byte[] secretData;
+	private static final int MAX_SIZE = 32;
 
 	public static void main(String[] args)throws IOException{
 		try{
@@ -58,7 +59,7 @@ public class Steganography{
 		int height = inputImage.getHeight();
 		int width = inputImage.getWidth();
 		int lengthData = secretData.length;
-		if(height*width < lengthData*8){
+		if(height*width < lengthData*8+MAX_SIZE){
 			throw new Exception("Encoded data size is greater than Maximum data encoding capacity of Image");
 		}
 		PNMImage output = ImageUtil.getEmptyImage(height,width,inputImage.getOriginalFormat(),255);
@@ -69,7 +70,7 @@ public class Steganography{
 				int red = inputImage.getPixel(i,j,0);
 				int green = inputImage.getPixel(i,j,1);
 				int blue = inputImage.getPixel(i,j,2);
-				if(firstSixteen < 16){
+				if(firstSixteen < MAX_SIZE){
 					int bit = (lengthData >> firstSixteen) & 1;
 					int newBlue = encodeBit(bit,green,blue);
 					output.setPixel(i,j,0,red);
@@ -138,7 +139,7 @@ public class Steganography{
 				int red = inputImage.getPixel(i,j,0);
 				int green = inputImage.getPixel(i,j,1);
 				int blue = inputImage.getPixel(i,j,2);
-				if(countFirst < 16){
+				if(countFirst < MAX_SIZE){
 					secretSize = secretSize | (((green^blue)&1)<<countFirst);
 					countFirst++;
 				}
